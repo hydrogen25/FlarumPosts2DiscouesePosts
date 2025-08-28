@@ -1,0 +1,14 @@
+[project]
+name = "flarum-posts-to-discouse"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.2.1",
+    "html2text>=2025.4.15",
+    "pydiscourse>=1.7.0",
+    "pyflarum>=1.0.2",
+    "retry>=0.9.2",
+    "tqdm>=4.67.1",
+]
