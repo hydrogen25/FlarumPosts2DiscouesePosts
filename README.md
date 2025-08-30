@@ -30,6 +30,8 @@ uv run main_zh_hans.py --start_id=1 --end_id=400 --api_key="your_api_key" --api_
 
 - **end_id**: The post you want FlarumPosts2DiscouesePosts to end up transferring.,you can find it after the flarum post URL `https://your.flarum.website/d/` . The default value is 100
 
+- **category_id**: The category to which the post will be migrated. This can be seen from the URL of the Discourse category. The default value is 1
+
 - **api_key**: Get it in `Advanced > API Key` from your discourse website console
 
 - **api_username**: The username you used when creating the api_key
