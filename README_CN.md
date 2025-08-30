@@ -29,6 +29,8 @@ uv run main_zh_hans.py --start_id=1 --end_id=400 --api_key="your_api_key" --api_
 
 * **end\_id**：Flarum 中要结束迁移的帖子 ID，可从 Flarum 帖子 URL 中 `https://your.flarum.website/d/` 后看到。默认值为 100
 
+- **category\_id**：要将帖子迁移到Discourse的类别，可从discourse类别的URL中看到，默认值为 1
+
 * **api\_key**：在 Discourse 管理后台 “高级 > API Key” 中获取
 
 * **api\_username**：用于创建 API Key 的用户名
@@ -36,3 +38,5 @@ uv run main_zh_hans.py --start_id=1 --end_id=400 --api_key="your_api_key" --api_
 * **flarum\_url**：要迁移帖子所在的 Flarum 站点的 URL
 
 * **discourse\_url**：要将帖子转发到的 Discourse 站点 URL
+
+

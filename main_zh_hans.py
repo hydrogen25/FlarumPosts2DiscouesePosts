@@ -35,22 +35,24 @@ class Passage:
         self.posts.append(post)
 
 
-async def post_passages(passages: List[Passage], client: DiscourseClient):
+async def post_passages(
+    passages: List[Passage], client: DiscourseClient, category_id: int
+):
     tasks = []
     print("-----正在发布帖子-----")
     for passage in tqdm(passages):
-        task = asyncio.create_task(_post_passage(passage, client))
+        task = asyncio.create_task(_post_passage(passage, client, category_id))
         tasks.append(task)
         await asyncio.gather(*tasks)
     print("-----已完成发布帖子-----")
 
 
 @retry(tries=5, delay=1)
-async def _post_passage(passage: Passage, client: DiscourseClient):
+async def _post_passage(passage: Passage, client: DiscourseClient, category_id: int):
     topic = client.create_post(
         title=passage.title,
         content=f"原发帖人：{passage.author}\n\n\n\n\n{passage.content}",
-        category_id=14,
+        category_id=category_id,
     )
     if topic is None:
         return
@@ -130,14 +132,26 @@ async def _get_passage(user: FlarumUser, discussion: Discussion) -> Passage:
     return passage
 
 
-async def start(user: FlarumUser, client: DiscourseClient, start_id: int, end_id: int):
+async def start(
+    user: FlarumUser,
+    client: DiscourseClient,
+    start_id: int,
+    end_id: int,
+    category_id: int,
+):
     passages = await get_passages(user, start_id, end_id)
-    await post_passages(passages, client)
+    await post_passages(passages, client, category_id)
 
 
 @click.command()
 @click.option("--start_id", default=1, help="转发FlarumID的开始数字", type=int)
 @click.option("--end_id", default=100, help="转发FlarumID的结束数字", type=int)
+@click.option(
+    "--category_id",
+    default=1,
+    help="你想迁移到Discourse的类别",
+    type=int,
+)
 @click.option("--flarum_url", required=True, type=str)
 @click.option("--discourse_url", required=True, type=str)
 @click.option("--api_key", required=True, type=str)
@@ -149,6 +163,7 @@ def main(
     api_username: str,
     start_id: int,
     end_id: int,
+    category_id: int,
 ):
     USER = FlarumUser(forum_url=flarum_url)
     CLIENT = DiscourseClient(
@@ -156,7 +171,7 @@ def main(
         api_key=api_key,
         api_username=api_username,
     )
-    asyncio.run(start(USER, CLIENT, start_id, end_id))
+    asyncio.run(start(USER, CLIENT, start_id, end_id, category_id))
 
 
 if __name__ == "__main__":
